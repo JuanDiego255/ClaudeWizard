@@ -80,7 +80,7 @@ namespace Softland.API
         //[Control("_pbFinalizar", "Finalizar", TipoControl.Boton, TipoValor.Ninguno, 1, true, "", "", "Paso 3", "", tamanio: 6)]
         //public PushButton _pbFinalizar { get { return pbCargar; } set { if (pbCargar.AM_Validate(value, this)) pbCargar = value; } }
         //public PushButton pbFinalizar = new PushButton();
-        [Control("_pbCancelar", "Cancelar", TipoControl.Boton, TipoValor.Ninguno, 1, true, "", "", " ", "", tamanio: 1)]
+        [Control("_pbCancelar", "Cancelar", TipoControl.Boton, TipoValor.Ninguno, 1, true, "", "", " ", " ", tamanio: 1)]
         public PushButton _pbCancelar { get { return pbCancelar; } set { if (pbCancelar.AM_Validate(value, this)) pbCancelar = value; } }
         public PushButton pbCancelar = new PushButton();
 
@@ -104,7 +104,7 @@ namespace Softland.API
             TamanioGrupo("Conciliación", 4, "Paso 2");
             TamanioGrupo("  ", 4, "Paso 2");
             TamanioGrupo("", 12, "Paso 3");
-            TamanioGrupo("", 12, " ");
+            TamanioGrupo(" ", 12, " ");
 
 
             this.esconderTabHeader = true;
@@ -114,7 +114,7 @@ namespace Softland.API
                                               "" + SeparadorGrupoTab + "Paso 2",
                                               "Conciliación" + SeparadorGrupoTab + "Paso 2",
                                               "" + SeparadorGrupoTab + "Paso 3",
-                                              "" + SeparadorGrupoTab + " "};
+                                              " " + SeparadorGrupoTab + " "};
 
 
             mlDescrip.ValorTexto = "Asistente de Purga de Movimientos\n\nEste proceso realiza la purga de Movimientos en Libros y en Bancos para la cuenta especificada, así como la Conciliaciones Bancarias asociadas.\nPara continuar selecciones el numero de";
