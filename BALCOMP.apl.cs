@@ -788,6 +788,8 @@ namespace Softland.ERP.CG.Reports.v701
         {
             psError = string.Empty;
             bool lbBien = true;
+            string cuentaAnteriorExcel = "";
+            bool detalleHeaderEscrito = false;
 
             try
             {
@@ -822,49 +824,127 @@ namespace Softland.ERP.CG.Reports.v701
                     var desc = sDescripcion;
                     var saldoNormal = sSaldoNormal == "A" ? "Acreedor" : sSaldoNormal == "D" ? "Deudor" : sSaldoNormal;
 
-                    var line = new List<object> { cuenta, desc, saldoNormal };
+                    // Solo escribir la línea de cuenta cuando es una cuenta nueva
+                    bool esNuevaCuenta = (cuenta != cuentaAnteriorExcel);
+                    if (esNuevaCuenta)
+                    {
+                        var line = new List<object> { cuenta, desc, saldoNormal };
 
-                    if (rbMonAmbas)
-                    {
-                        line.Add(nSaldoInicialLoc);
-                        line.Add(nTotalDebitosLoc);
-                        line.Add(nTotalCreditosLoc);
-                        if (cbImpCambioNeto) line.Add(nCambioNetoLoc);
-                        line.Add(nSaldoFinalLoc);
-                        line.Add(nSaldoInicialDol);
-                        line.Add(nTotalDebitosDol);
-                        line.Add(nTotalCreditosDol);
-                        if (cbImpCambioNeto) line.Add(nCambioNetoDol);
-                        line.Add(nSaldoFinalDol);
-                    }
-                    else if (rbMonLocal)
-                    {
-                        line.Add(nSaldoInicialLoc);
-                        line.Add(nTotalDebitosLoc);
-                        line.Add(nTotalCreditosLoc);
-                        if (cbImpCambioNeto) line.Add(nCambioNetoLoc);
-                        line.Add(nSaldoFinalLoc);
-                    }
-                    else
-                    {
-                        line.Add(nSaldoInicialDol);
-                        line.Add(nTotalDebitosDol);
-                        line.Add(nTotalCreditosDol);
-                        if (cbImpCambioNeto) line.Add(nCambioNetoDol);
-                        line.Add(nSaldoFinalDol);
+                        if (rbMonAmbas)
+                        {
+                            line.Add(nSaldoInicialLoc);
+                            line.Add(nTotalDebitosLoc);
+                            line.Add(nTotalCreditosLoc);
+                            if (cbImpCambioNeto) line.Add(nCambioNetoLoc);
+                            line.Add(nSaldoFinalLoc);
+                            line.Add(nSaldoInicialDol);
+                            line.Add(nTotalDebitosDol);
+                            line.Add(nTotalCreditosDol);
+                            if (cbImpCambioNeto) line.Add(nCambioNetoDol);
+                            line.Add(nSaldoFinalDol);
+                        }
+                        else if (rbMonLocal)
+                        {
+                            line.Add(nSaldoInicialLoc);
+                            line.Add(nTotalDebitosLoc);
+                            line.Add(nTotalCreditosLoc);
+                            if (cbImpCambioNeto) line.Add(nCambioNetoLoc);
+                            line.Add(nSaldoFinalLoc);
+                        }
+                        else
+                        {
+                            line.Add(nSaldoInicialDol);
+                            line.Add(nTotalDebitosDol);
+                            line.Add(nTotalCreditosDol);
+                            if (cbImpCambioNeto) line.Add(nCambioNetoDol);
+                            line.Add(nSaldoFinalDol);
+                        }
+
+                        if (fclsCompania.UsaUnidades && cbImpUnidades && !rbMonAmbas)
+                        {
+                            line.Add(nSaldoInicialUnd);
+                            line.Add(nTotalDebitosUnd);
+                            line.Add(nTotalCreditosUnd);
+                            if (cbImpCambioNeto) line.Add(nCambioNetoUnd);
+                            line.Add(nSaldoFinalUnd);
+                        }
+
+                        lnTotalFilas++;
+                        addLineaArchivoExcel(line.ToArray(), tipoRow.detalle);
+
+                        cuentaAnteriorExcel = cuenta;
+                        detalleHeaderEscrito = false;
                     }
 
-                    if (fclsCompania.UsaUnidades && cbImpUnidades && !rbMonAmbas)
+                    // Escribir líneas de detalle de movimiento si aplica
+                    if (cbDetalleMov && sImprimirDetalle == "SI")
                     {
-                        line.Add(nSaldoInicialUnd);
-                        line.Add(nTotalDebitosUnd);
-                        line.Add(nTotalCreditosUnd);
-                        if (cbImpCambioNeto) line.Add(nCambioNetoUnd);
-                        line.Add(nSaldoFinalUnd);
-                    }
+                        // Encabezado del detalle (solo una vez por cuenta)
+                        if (!detalleHeaderEscrito)
+                        {
+                            lnTotalFilas++;
+                            excel.abreAtributoXmlWriter(lnTotalFilas);
+                            excel.agregarCeldaXmlWriter("Fecha", 3, "str");
+                            excel.agregarCeldaXmlWriter("Asiento", 3, "str");
+                            excel.agregarCeldaXmlWriter("Centro Costo", 3, "str");
+                            excel.agregarCeldaXmlWriter("Referencia", 3, "str");
+                            excel.agregarCeldaXmlWriter("Fuente", 3, "str");
+                            excel.agregarCeldaXmlWriter("Tipo Asiento", 3, "str");
+                            excel.agregarCeldaXmlWriter("Origen", 3, "str");
+                            // Montos según moneda
+                            if (rbMonAmbas)
+                            {
+                                excel.agregarCeldaXmlWriter("Débitos (Local)", 3, "str");
+                                excel.agregarCeldaXmlWriter("Créditos (Local)", 3, "str");
+                                excel.agregarCeldaXmlWriter("Débitos (Dólar)", 3, "str");
+                                excel.agregarCeldaXmlWriter("Créditos (Dólar)", 3, "str");
+                            }
+                            else
+                            {
+                                excel.agregarCeldaXmlWriter("Débitos", 3, "str");
+                                excel.agregarCeldaXmlWriter("Créditos", 3, "str");
+                            }
+                            excel.cierraAtributoXmlWriter();
+                            detalleHeaderEscrito = true;
+                        }
 
-                    lnTotalFilas++;
-                    addLineaArchivoExcel(line.ToArray(), tipoRow.detalle);
+                        // Fila de detalle del movimiento
+                        lnTotalFilas++;
+                        var detLine = new List<object>();
+                        detLine.Add(dtFecha != SalDate.Null ? Sal.FmtFormatDateTime(dtFecha, "dd/MM/yyyy") : "");
+                        detLine.Add(sAsiento ?? "");
+                        detLine.Add(sCentroCosto ?? "");
+                        detLine.Add(sReferencia ?? "");
+                        detLine.Add(sFuente ?? "");
+                        detLine.Add(sTipoAsiento ?? "");
+                        detLine.Add(sOrigen ?? "");
+
+                        if (rbMonAmbas)
+                        {
+                            detLine.Add(nDebitosLoc);
+                            detLine.Add(nCreditosLoc);
+                            detLine.Add(nDebitosDol);
+                            detLine.Add(nCreditosDol);
+                        }
+                        else if (rbMonLocal)
+                        {
+                            detLine.Add(nDebitosLoc);
+                            detLine.Add(nCreditosLoc);
+                        }
+                        else
+                        {
+                            detLine.Add(nDebitosDol);
+                            detLine.Add(nCreditosDol);
+                        }
+
+                        if (fclsCompania.UsaUnidades && cbImpUnidades && !rbMonAmbas)
+                        {
+                            detLine.Add(nDebitosUnd);
+                            detLine.Add(nCreditosUnd);
+                        }
+
+                        addLineaArchivoExcel(detLine.ToArray(), tipoRow.detalle);
+                    }
                 }
                 // Totales (mismo cálculo que usa el footer del RPT)
                 lnTotalFilas++;
@@ -1541,7 +1621,8 @@ namespace Softland.ERP.CG.Reports.v701
         /// </summary>
         public override bool OnReportStart()
         {
-            //this.AsignarParametro("nImprimirCambioNeto", cbImpCambioNeto);
+            this.AsignarParametro("nImprimirCambioNeto", cbImpCambioNeto ? 1 : 0);
+            this.AsignarParametro("cbDetalleMov", cbDetalleMov ? 1 : 0);
             // ljm NITs - Reportes de Balance de Comprobación
             /*
                 // Se agrega el indicador de si está activa la opción de NITs.
