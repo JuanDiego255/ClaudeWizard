@@ -824,8 +824,11 @@ namespace Softland.ERP.CG.Reports.v701
                     var desc = sDescripcion;
                     var saldoNormal = sSaldoNormal == "A" ? "Acreedor" : sSaldoNormal == "D" ? "Deudor" : sSaldoNormal;
 
-                    // Solo escribir la línea de cuenta cuando es una cuenta nueva
-                    bool esNuevaCuenta = (cuenta != cuentaAnteriorExcel);
+                    // Cuando cbDetalleMov=true el SQL retorna múltiples filas por cuenta,
+                    // solo escribir la línea resumen de cuenta una vez.
+                    // Cuando cbDetalleMov=false el SQL usa DISTINCT (una fila por cuenta),
+                    // se escribe siempre.
+                    bool esNuevaCuenta = !cbDetalleMov || (cuenta != cuentaAnteriorExcel);
                     if (esNuevaCuenta)
                     {
                         var line = new List<object> { cuenta, desc, saldoNormal };
