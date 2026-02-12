@@ -960,51 +960,53 @@ namespace Softland.ERP.CG.Reports.v701
 
                 var ic = System.Globalization.CultureInfo.InvariantCulture;
 
+                var fmt = "#,##0.00";
+
                 if (rbMonAmbas)
                 {
-                    excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialLoc.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalDebitosLoc.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalCreditosLoc.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalLoc.Value.ToString(ic), 12, "n");
-                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalLoc - nRepTotalSaldoInicialLoc).Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialDol.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalDebitosDol.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalCreditosDol.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalDol.Value.ToString(ic), 12, "n");
-                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalDol - nRepTotalSaldoInicialDol).Value.ToString(ic), 12, "n");
+                    excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialLoc.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalDebitosLoc.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalCreditosLoc.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalLoc.Value.ToString(fmt, ic), 12, "str");
+                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalLoc - nRepTotalSaldoInicialLoc).Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialDol.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalDebitosDol.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalCreditosDol.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalDol.Value.ToString(fmt, ic), 12, "str");
+                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalDol - nRepTotalSaldoInicialDol).Value.ToString(fmt, ic), 12, "str");
                 }
                 else if (rbMonLocal)
                 {
-                    excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialLoc.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalDebitosLoc.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalCreditosLoc.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalLoc.Value.ToString(ic), 12, "n");
-                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalLoc - nRepTotalSaldoInicialLoc).Value.ToString(ic), 12, "n");
+                    excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialLoc.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalDebitosLoc.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalCreditosLoc.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalLoc.Value.ToString(fmt, ic), 12, "str");
+                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalLoc - nRepTotalSaldoInicialLoc).Value.ToString(fmt, ic), 12, "str");
 
                     if (fclsCompania.UsaUnidades && cbImpUnidades)
                     {
-                        excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialUnd.Value.ToString(ic), 12, "n");
-                        excel.agregarCeldaXmlWriter(nRepTotalDebitosUnd.Value.ToString(ic), 12, "n");
-                        excel.agregarCeldaXmlWriter(nRepTotalCreditosUnd.Value.ToString(ic), 12, "n");
-                        excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalUnd.Value.ToString(ic), 12, "n");
-                        if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalUnd - nRepTotalSaldoInicialUnd).Value.ToString(ic), 12, "n");
+                        excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialUnd.Value.ToString(fmt, ic), 12, "str");
+                        excel.agregarCeldaXmlWriter(nRepTotalDebitosUnd.Value.ToString(fmt, ic), 12, "str");
+                        excel.agregarCeldaXmlWriter(nRepTotalCreditosUnd.Value.ToString(fmt, ic), 12, "str");
+                        excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalUnd.Value.ToString(fmt, ic), 12, "str");
+                        if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalUnd - nRepTotalSaldoInicialUnd).Value.ToString(fmt, ic), 12, "str");
                     }
                 }
                 else
                 {
-                    excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialDol.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalDebitosDol.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalCreditosDol.Value.ToString(ic), 12, "n");
-                    excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalDol.Value.ToString(ic), 12, "n");
-                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalDol - nRepTotalSaldoInicialDol).Value.ToString(ic), 12, "n");
+                    excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialDol.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalDebitosDol.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalCreditosDol.Value.ToString(fmt, ic), 12, "str");
+                    excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalDol.Value.ToString(fmt, ic), 12, "str");
+                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalDol - nRepTotalSaldoInicialDol).Value.ToString(fmt, ic), 12, "str");
 
                     if (fclsCompania.UsaUnidades && cbImpUnidades)
                     {
-                        excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialUnd.Value.ToString(ic), 12, "n");
-                        excel.agregarCeldaXmlWriter(nRepTotalDebitosUnd.Value.ToString(ic), 12, "n");
-                        excel.agregarCeldaXmlWriter(nRepTotalCreditosUnd.Value.ToString(ic), 12, "n");
-                        excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalUnd.Value.ToString(ic), 12, "n");
-                        if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalUnd - nRepTotalSaldoInicialUnd).Value.ToString(ic), 12, "n");
+                        excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialUnd.Value.ToString(fmt, ic), 12, "str");
+                        excel.agregarCeldaXmlWriter(nRepTotalDebitosUnd.Value.ToString(fmt, ic), 12, "str");
+                        excel.agregarCeldaXmlWriter(nRepTotalCreditosUnd.Value.ToString(fmt, ic), 12, "str");
+                        excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalUnd.Value.ToString(fmt, ic), 12, "str");
+                        if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalUnd - nRepTotalSaldoInicialUnd).Value.ToString(fmt, ic), 12, "str");
                     }
                 }
 
@@ -1037,14 +1039,14 @@ namespace Softland.ERP.CG.Reports.v701
                         string valorStr;
                         if (text[cont] is SalDecimal)
                         {
-                            stipo = "n";
+                            stipo = "str";
                             var sd = (SalDecimal)text[cont];
-                            valorStr = sd.HasValue ? sd.Value.ToString(System.Globalization.CultureInfo.InvariantCulture) : "0";
+                            valorStr = sd.HasValue ? sd.Value.ToString("#,##0.00", System.Globalization.CultureInfo.InvariantCulture) : "0.00";
                         }
                         else if (text[cont] is decimal)
                         {
-                            stipo = "n";
-                            valorStr = ((decimal)text[cont]).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                            stipo = "str";
+                            valorStr = ((decimal)text[cont]).ToString("#,##0.00", System.Globalization.CultureInfo.InvariantCulture);
                         }
                         else if (text[cont] is DateTime)
                         {
@@ -1083,7 +1085,7 @@ namespace Softland.ERP.CG.Reports.v701
                     }
                     else
                     {
-                        excel.agregarCeldaXmlWriter("0", 12, "n");
+                        excel.agregarCeldaXmlWriter("0.00", 12, "str");
                     }
                 }
 
