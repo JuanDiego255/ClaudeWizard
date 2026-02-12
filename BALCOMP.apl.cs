@@ -309,13 +309,13 @@ namespace Softland.ERP.CG.Reports.v701
                     "Saldo Inicial (Local)",
                     "Débitos (Local)",
                     "Créditos (Local)",
-                    cbImpCambioNeto ? "Cambio Neto (Local)" : null,
                     "Balance Final (Local)",
+                    cbImpCambioNeto ? "Cambio Neto (Local)" : null,
                     "Saldo Inicial (Dólar)",
                     "Débitos (Dólar)",
                     "Créditos (Dólar)",
-                    cbImpCambioNeto ? "Cambio Neto (Dólar)" : null,
-                    "Balance Final (Dólar)"
+                    "Balance Final (Dólar)",
+                    cbImpCambioNeto ? "Cambio Neto (Dólar)" : null
                 }.Where(x => x != null));
             }
             else if (rbMonLocal)
@@ -325,8 +325,8 @@ namespace Softland.ERP.CG.Reports.v701
                     "Saldo Inicial",
                     "Débitos",
                     "Créditos",
-                    cbImpCambioNeto ? "Cambio Neto" : null,
-                    "Balance Final"
+                    "Balance Final",
+                    cbImpCambioNeto ? "Cambio Neto" : null
                 }.Where(x => x != null));
             }
             else
@@ -337,8 +337,8 @@ namespace Softland.ERP.CG.Reports.v701
                     "Saldo Inicial",
                     "Débitos",
                     "Créditos",
-                    cbImpCambioNeto ? "Cambio Neto" : null,
-                    "Balance Final"
+                    "Balance Final",
+                    cbImpCambioNeto ? "Cambio Neto" : null
                 }.Where(x => x != null));
             }
 
@@ -350,8 +350,8 @@ namespace Softland.ERP.CG.Reports.v701
                     "Saldo Inicial (Unidades)",
                     "Débitos (Unidades)",
                     "Créditos (Unidades)",
-                    cbImpCambioNeto ? "Cambio Neto (Unidades)" : null,
-                    "Balance Final (Unidades)"
+                    "Balance Final (Unidades)",
+                    cbImpCambioNeto ? "Cambio Neto (Unidades)" : null
                 }.Where(x => x != null));
             }
 
@@ -616,15 +616,17 @@ namespace Softland.ERP.CG.Reports.v701
                 // Texto detalle (solo borde)
                 excel.addCellFormat(0, 0, 0, 1, true, 0, out cellFormat);
 
-                // Numérico detalle (2 decimales)
+                // Numérico detalle (2 decimales, separador de miles)
                 excel.addCellFormat(0, 0, 0, 1, true, 4, out cellFormat);
+                cellFormat.NumberFormatId = 4; // #,##0.00
                 cellFormat.ApplyNumberFormat = true;
 
                 // Total etiqueta (más marcado)
                 excel.addCellFormat(3, 3, 0, 2, true, 0, out cellFormat);
 
-                // Total numérico (más marcado + numérico)
+                // Total numérico (más marcado + numérico, separador de miles)
                 excel.addCellFormat(3, 3, 0, 2, true, 4, out cellFormat);
+                cellFormat.NumberFormatId = 4; // #,##0.00
                 cellFormat.ApplyNumberFormat = true;
 
 
@@ -838,29 +840,29 @@ namespace Softland.ERP.CG.Reports.v701
                             line.Add(nSaldoInicialLoc);
                             line.Add(nTotalDebitosLoc);
                             line.Add(nTotalCreditosLoc);
-                            if (cbImpCambioNeto) line.Add(nCambioNetoLoc);
                             line.Add(nSaldoFinalLoc);
+                            if (cbImpCambioNeto) line.Add(nCambioNetoLoc);
                             line.Add(nSaldoInicialDol);
                             line.Add(nTotalDebitosDol);
                             line.Add(nTotalCreditosDol);
-                            if (cbImpCambioNeto) line.Add(nCambioNetoDol);
                             line.Add(nSaldoFinalDol);
+                            if (cbImpCambioNeto) line.Add(nCambioNetoDol);
                         }
                         else if (rbMonLocal)
                         {
                             line.Add(nSaldoInicialLoc);
                             line.Add(nTotalDebitosLoc);
                             line.Add(nTotalCreditosLoc);
-                            if (cbImpCambioNeto) line.Add(nCambioNetoLoc);
                             line.Add(nSaldoFinalLoc);
+                            if (cbImpCambioNeto) line.Add(nCambioNetoLoc);
                         }
                         else
                         {
                             line.Add(nSaldoInicialDol);
                             line.Add(nTotalDebitosDol);
                             line.Add(nTotalCreditosDol);
-                            if (cbImpCambioNeto) line.Add(nCambioNetoDol);
                             line.Add(nSaldoFinalDol);
+                            if (cbImpCambioNeto) line.Add(nCambioNetoDol);
                         }
 
                         if (fclsCompania.UsaUnidades && cbImpUnidades && !rbMonAmbas)
@@ -868,8 +870,8 @@ namespace Softland.ERP.CG.Reports.v701
                             line.Add(nSaldoInicialUnd);
                             line.Add(nTotalDebitosUnd);
                             line.Add(nTotalCreditosUnd);
-                            if (cbImpCambioNeto) line.Add(nCambioNetoUnd);
                             line.Add(nSaldoFinalUnd);
+                            if (cbImpCambioNeto) line.Add(nCambioNetoUnd);
                         }
 
                         lnTotalFilas++;
@@ -963,29 +965,29 @@ namespace Softland.ERP.CG.Reports.v701
                     excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialLoc.Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalDebitosLoc.Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalCreditosLoc.Value.ToString(ic), 12, "n");
-                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalLoc - nRepTotalSaldoInicialLoc).Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalLoc.Value.ToString(ic), 12, "n");
+                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalLoc - nRepTotalSaldoInicialLoc).Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialDol.Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalDebitosDol.Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalCreditosDol.Value.ToString(ic), 12, "n");
-                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalDol - nRepTotalSaldoInicialDol).Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalDol.Value.ToString(ic), 12, "n");
+                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalDol - nRepTotalSaldoInicialDol).Value.ToString(ic), 12, "n");
                 }
                 else if (rbMonLocal)
                 {
                     excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialLoc.Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalDebitosLoc.Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalCreditosLoc.Value.ToString(ic), 12, "n");
-                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalLoc - nRepTotalSaldoInicialLoc).Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalLoc.Value.ToString(ic), 12, "n");
+                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalLoc - nRepTotalSaldoInicialLoc).Value.ToString(ic), 12, "n");
 
                     if (fclsCompania.UsaUnidades && cbImpUnidades)
                     {
                         excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialUnd.Value.ToString(ic), 12, "n");
                         excel.agregarCeldaXmlWriter(nRepTotalDebitosUnd.Value.ToString(ic), 12, "n");
                         excel.agregarCeldaXmlWriter(nRepTotalCreditosUnd.Value.ToString(ic), 12, "n");
-                        if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalUnd - nRepTotalSaldoInicialUnd).Value.ToString(ic), 12, "n");
                         excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalUnd.Value.ToString(ic), 12, "n");
+                        if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalUnd - nRepTotalSaldoInicialUnd).Value.ToString(ic), 12, "n");
                     }
                 }
                 else
@@ -993,16 +995,16 @@ namespace Softland.ERP.CG.Reports.v701
                     excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialDol.Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalDebitosDol.Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalCreditosDol.Value.ToString(ic), 12, "n");
-                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalDol - nRepTotalSaldoInicialDol).Value.ToString(ic), 12, "n");
                     excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalDol.Value.ToString(ic), 12, "n");
+                    if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalDol - nRepTotalSaldoInicialDol).Value.ToString(ic), 12, "n");
 
                     if (fclsCompania.UsaUnidades && cbImpUnidades)
                     {
                         excel.agregarCeldaXmlWriter(nRepTotalSaldoInicialUnd.Value.ToString(ic), 12, "n");
                         excel.agregarCeldaXmlWriter(nRepTotalDebitosUnd.Value.ToString(ic), 12, "n");
                         excel.agregarCeldaXmlWriter(nRepTotalCreditosUnd.Value.ToString(ic), 12, "n");
-                        if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalUnd - nRepTotalSaldoInicialUnd).Value.ToString(ic), 12, "n");
                         excel.agregarCeldaXmlWriter(nRepTotalSaldoFinalUnd.Value.ToString(ic), 12, "n");
+                        if (cbImpCambioNeto) excel.agregarCeldaXmlWriter((nRepTotalSaldoFinalUnd - nRepTotalSaldoInicialUnd).Value.ToString(ic), 12, "n");
                     }
                 }
 
